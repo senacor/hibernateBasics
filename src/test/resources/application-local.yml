@@ -1,0 +1,72 @@
+ui:
+  host: http://localhost:3000
+
+server:
+  port: 8080
+  error:
+    include-stacktrace: ALWAYS
+
+logging:
+  level:
+    root: INFO
+    org:
+      springframework:
+        cache: DEBUG
+        interceptor:
+          CacheInterceptor: DEBUG
+
+spring:
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/postgres"
+    username: "test" # pragma: allowlist secret
+    password: "test" # pragma: allowlist secret
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        ddl-auto: none
+        format_sql: true
+        generate_statistics: true
+        default_schema: conditions
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    disable-swagger-default-url: true
+    config-url: http://localhost:8080/v3/api-docs/swagger-config
+    url: http://localhost:8080/v3/api-docs
+
+authentication:
+  openPatterns:
+    - /actuator/metrics/**
+    - /actuator/prometheus
+    - /actuator/health
+    - /actuator/health/liveness
+    - /actuator/health/readiness
+    - /actuator/permissions
+    - /v3/**
+    - /swagger-ui/**
+
+management:
+  server:
+    port: 8081
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+    health:
+      probes:
+        enabled: true
+    httptrace:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health, metrics, prometheus, permissions, httptrace
+
+
+authorization:
+  entitlementBaseUrl: http://localhost
